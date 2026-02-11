@@ -32,6 +32,11 @@ export function registerChatRoutes(app: Express): void {
         res.setHeader("Cache-Control", "no-cache");
         res.setHeader("Connection", "keep-alive");
 
+        let reply =
+          normalized === "hi"
+            ? "Hi, user! How may I help you?"
+            : "Welcome to MindfulPath! Take assessment to monitor your mental health.";
+
         // Stream reply as SSE
         res.write(`data: ${JSON.stringify({ content: reply })}\n\n`);
 
