@@ -13,8 +13,8 @@ import Contact from "@/pages/Contact";
 import Analytics from "@/pages/Analytics";
 import NotFound from "@/pages/not-found";
 import { Navigation } from "@/components/Navigation";
-import { ChatBot } from "@/components/ChatBot";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import AIAssistant from "@/components/AIAssistant";
 
 function Router() {
   return (
@@ -46,7 +46,7 @@ function App() {
       <TooltipProvider>
         <Navigation />
         <Router />
-        <ChatBot />
+        <AIAssistant />
         <Toaster />
       </TooltipProvider>
     </QueryClientProvider>

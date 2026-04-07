@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { api, errorSchemas } from "@shared/routes";
 import { z } from "zod";
-import { registerChatRoutes } from "./integrations/chat";
+import { registerAssistantRoutes } from "./integrations/assistant";
 import { setupAuth } from "./auth";
 
 export async function registerRoutes(
@@ -13,8 +13,8 @@ export async function registerRoutes(
   // Setup Authentication (Passport)
   setupAuth(app);
 
-  // Register Chat Integration Routes
-  registerChatRoutes(app);
+  // Register AI Assistant Routes
+  registerAssistantRoutes(app);
 
   // === API Routes ===
 
