@@ -1,84 +1,126 @@
-# MindfulPath - Mental Health Assessment Web Application
+# 🧠 MindfulPath
 
-## Overview
+[![Built with React](https://img.shields.io/badge/Frontend-React%2018-blue.svg)](https://reactjs.org/)
+[![Backend](https://img.shields.io/badge/Backend-Express%205-green.svg)](https://expressjs.com/)
+[![Database](https://img.shields.io/badge/Database-PostgreSQL-blue.svg)](https://www.postgresql.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-MindfulPath is a full-stack mental health assessment web application designed for college students. It provides self-assessment quizzes, wellness tips, professional contact resources, analytics dashboards, and an AI-powered chatbot. The app detects potentially insincere quiz responses based on response timing, categorizes results (fake/healthy/moderate/serious), and tracks user progress over time with interactive charts.
+**MindfulPath** is a premium, empathetic mental health assessment platform designed to help users track their well-being, gain clinical insights, and receive continuous support through advanced AI and automated checking systems.
 
-## System Architecture
+---
+
+## ✨ Key Features
+
+### 📝 Intelligent Assessment
+- **Likert-Scale Quiz**: 10-question scientifically-backed mental health evaluation.
+- **Insincerity Detection**: Built-in algorithm detects "fake" responses based on user interaction timing (flagging average responses < 2s).
+- **Categorized Results**: Instant feedback classifying status into *Healthy*, *Moderate*, or *Serious* with tailored advice.
+
+### 📊 Personal Analytics
+- **Progress Tracking**: Visualize mental health trends over time with dynamic line charts.
+- **Historical Logs**: Complete record of past assessments for long-term health monitoring.
+- **Insight Cards**: Quick-reference statistics on average scores and check-in frequency.
+
+### 🤖 AI Wellness Assistant
+- **Empathetic AI**: Integrated streaming chatbot powered by **OpenRouter (GPT-3.5 Turbo)**.
+- **Specialized Support**: Trained specifically for mental health, wellness, and stress management guidance.
+- **Real-time SSE Support**: Smooth, streaming responses for a professional and fluid interaction experience.
+
+### 📧 Automated Reminders
+- **Weekly Check-ins**: Automated email system using **Node-Cron** and **Nodemailer**.
+- **Sunday Sessions**: Sends personalized reminders every Sunday at 10:00 AM to encourage regular self-reflection.
+
+### 📚 Wellness Library & Resources
+- **Curated Tips**: Specialized sections for Anxiety, Sleep, and Mindfulness.
+- **Emergency Resources**: Quick access to professional help and international crisis hotlines.
+
+---
+
+## 🛠️ Technology Stack
 
 ### Frontend
-
-- **Framework**: React 18 with TypeScript, bundled via Vite
-- **Routing**: Wouter (lightweight client-side router)
-- **State Management**: TanStack React Query for server state, local React state for UI
-- **UI Components**: shadcn/ui (new-york style) built on Radix UI primitives
-- **Styling**: Tailwind CSS with CSS variables for theming (light/dark mode support), custom calming teal/lavender color palette
-- **Animations**: Framer Motion for page transitions and micro-interactions
-- **Charts**: Recharts for analytics (line charts, score trends)
-- **Fonts**: DM Sans (body), Outfit (display/headings)
-- **Path aliases**: `@/` maps to `client/src/`, `@shared/` maps to `shared/`
+- **Framework**: React 18 + TypeScript
+- **State Management**: TanStack Query (React Query)
+- **UI & Styling**: Tailwind CSS, Radix UI (shadcn/ui), Framer Motion
+- **Visualizations**: Recharts
+- **Router**: Wouter (High-performance routing)
 
 ### Backend
+- **Runtime**: Node.js (Express 5)
+- **Database**: PostgreSQL with **Drizzle ORM**
+- **Authentication**: Passport.js (Secure session-based auth)
+- **Services**: Node-cron (Scheduling), Nodemailer (SMTP)
+- **AI Integration**: OpenRouter API with Server-Sent Events (SSE)
 
-- **Framework**: Express 5 on Node.js with TypeScript (tsx for dev, esbuild for production)
-- **Authentication**: Passport.js with Local Strategy, express-session with MemoryStore, scrypt password hashing
-- **Session**: Cookie-based sessions (httpOnly), MemoryStore in dev (should be replaced with connect-pg-simple for production)
-- **API Design**: REST endpoints under `/api/` prefix, Zod validation on inputs, shared route definitions in `shared/routes.ts`
-- **AI Chatbot**: OpenAI-compatible API via AI Integrations, SSE streaming for chat responses at `POST /api/conversations/:id/messages`
-- **Build**: Custom build script (`script/build.ts`) using esbuild for server + Vite for client, outputs to `dist/`
+---
 
-### Database
+## 🚀 Getting Started
 
-- **Database**: PostgreSQL (required, referenced via `DATABASE_URL` environment variable)
-- **ORM**: Drizzle ORM with `drizzle-zod` for schema-to-validation integration
-- **Schema location**: `shared/schema.ts` and `shared/models/chat.ts`
-- **Migrations**: Drizzle Kit with `db:push` command for schema sync
-- **Tables**:
-  - `users` - id, username (unique), password (hashed), name, studentId, mobile, role
-  - `quiz_results` - id, userId (FK nullable), score, category (fake/healthy/moderate/serious), timeTaken, responses (JSONB), createdAt
-  - `conversations` - id, title, createdAt (for chatbot)
-  - `messages` - id, conversationId (FK cascade delete), role, content, createdAt (for chatbot)
+### Prerequisites
+- Node.js (v18+)
+- PostgreSQL Database
+- Gmail Account (for reminders)
 
-### Key Pages
+### Installation
 
-- **Home** (`/`) - Landing page with hero section, mental health awareness content
-- **Auth** (`/auth`) - Login/Register with tabs, redirects to dashboard on success
-- **Quiz** (`/quiz`) - 10 Likert-scale questions with timing-based fake detection (< 2s avg per question), protected route
-- **Results** (`/results`) - Score display with category-specific recommendations, uses URL query params
-- **Tips** (`/tips`) - Tabbed wellness library (Sleep, Anxiety, Mindfulness) with self-help content
-- **Contact** (`/contact`) - Emergency numbers, helpline info, online therapy resources
-- **Analytics** (`/analytics`) - Dashboard with score trends (line chart), stats cards, protected route
+1. **Clone & Install Dependencies**
+   ```bash
+   npm install
+   ```
 
-### AI Integrations
+2. **Database Setup**
+   Ensure your PostgreSQL instance is running, then run the push command to sync the schema:
+   ```bash
+   npm run db:push
+   ```
 
-Located in `server/integrations/`:
+3. **Configure Environment Variables**
+   Create a `.env` file in the root directory:
+   ```env
+   DATABASE_URL=postgresql://user:password@localhost:5432/mental_health
+   SESSION_SECRET=your_secret_key
+   OPENROUTER_API_KEY=your_openrouter_key
+   GMAIL_USER=your_email@gmail.com
+   GMAIL_APP_PASSWORD=xxxx_xxxx_xxxx_xxxx
+   ```
 
-- **Chat** - Text-based AI chatbot with conversation persistence and SSE streaming
-- **Audio** - Voice chat capabilities with PCM16 audio processing, AudioWorklet playback
-- **Image** - Image generation via OpenAI-compatible API (gpt-image-1)
-- **Batch** - Batch processing utilities with rate limiting and retries
+4. **Launch Application**
+   ```bash
+   npm run dev
+   ```
+   The app will be available at `http://localhost:5000`.
 
-### Protected Routes
+---
 
-Quiz, Results, and Analytics pages require authentication. The `ProtectedRoute` component checks auth status and redirects to `/auth` if not logged in.
+## 📁 Project Structure
 
-## External Dependencies
+```text
+├── client/              # React frontend application
+│   ├── src/
+│   │   ├── components/  # Reusable UI primitives & features
+│   │   ├── hooks/       # Custom React hooks (Auth, AI, etc.)
+│   │   ├── lib/         # Utility functions & API clients
+│   │   └── pages/       # Page-level components
+├── server/              # Express backend application
+│   ├── services/        # Email, Cron, and external logic
+│   ├── integrations/    # AI/Chatbot implementations
+│   ├── auth.ts          # Passport authentication logic
+│   └── index.ts         # Server entry point
+├── shared/              # Shared TypeScript types and Drizzle schemas
+└── migrations/          # Database migration files
+```
 
-### Required Environment Variables
+---
 
-- `DATABASE_URL` - PostgreSQL connection string (must be provisioned)
-- `SESSION_SECRET` - Session encryption key (has fallback default, should be set in production)
-- `AI_INTEGRATIONS_OPENAI_API_KEY` - OpenAI API key for chatbot and AI features
-- `AI_INTEGRATIONS_OPENAI_BASE_URL` - OpenAI-compatible API base URL (AI Integrations)
+## 🛡️ Security & Performance
+- **Password Hashing**: Secure encryption using scrypt.
+- **Session Management**: `httpOnly` cookies with secure session storage.
+- **Rate Limiting**: Integrated safeguards for AI API usage.
+- **Optimized Builds**: Bundled via Vite and esbuild for maximum production performance.
 
-### Key NPM Packages
+---
 
-- **Server**: express, passport, passport-local, express-session, drizzle-orm, pg, openai, zod
-- **Client**: react, wouter, @tanstack/react-query, recharts, framer-motion, date-fns, shadcn/ui components (Radix UI)
-- **Shared**: drizzle-zod, zod (validation schemas shared between client and server)
+## 📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-### Third-Party Services
-
-- **PostgreSQL** - Primary data store
-- **OpenAI API** (via AI Integrations) - Powers the chatbot, image generation, and audio features
-- **External links** - BetterHelp, crisis hotlines (988, 911) referenced on Contact page
+Developed for **Project Based Learning (PBL)**.
