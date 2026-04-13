@@ -16,7 +16,7 @@ export default function AuthPage() {
   
   const [loginData, setLoginData] = useState({ username: "", password: "" });
   const [registerData, setRegisterData] = useState({ 
-    username: "", password: "", name: "", mobile: "", studentId: "" 
+    username: "", password: "", name: "", email: "", studentId: "" 
   });
 
   if (user) return <Redirect to="/analytics" />;
@@ -118,12 +118,13 @@ export default function AuthPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="reg-mobile">Mobile (Optional)</Label>
+                    <Label htmlFor="reg-email">Email</Label>
                     <Input 
-                      id="reg-mobile" 
-                      type="tel"
-                      value={registerData.mobile}
-                      onChange={(e) => setRegisterData({...registerData, mobile: e.target.value})}
+                      id="reg-email" 
+                      type="email"
+                      value={registerData.email}
+                      onChange={(e) => setRegisterData({...registerData, email: e.target.value})}
+                      required
                     />
                   </div>
                 </CardContent>

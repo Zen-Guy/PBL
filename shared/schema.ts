@@ -11,7 +11,7 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
   name: text("name").notNull(),
   studentId: text("student_id"), // Optional, as it might not be relevant for non-students
-  mobile: text("mobile"),
+  email: text("email"),
   role: text("role").default("user").notNull(),
 });
 
