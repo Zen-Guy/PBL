@@ -17,7 +17,7 @@ services:
       - key: AI_INTEGRATIONS_OPENAI_API_KEY
         sync: false # User will set this manually in the dashboard
       - key: AI_INTEGRATIONS_OPENAI_BASE_URL
-        value: https://api.openai.com/v1
+        value: https://openrouter.ai/api/v1
 
 databases:
   - name: pbl-db

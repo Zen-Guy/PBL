@@ -6,10 +6,9 @@ import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
 import { storage } from "./storage";
 import { User } from "@shared/schema";
-import { createRequire } from "module";
+import memorystore from "memorystore";
 
-const require = createRequire(import.meta.url);
-const MemoryStore = require("memorystore")(session);
+const MemoryStore = memorystore(session);
 
 const scryptAsync = promisify(scrypt);
 
